@@ -23,8 +23,9 @@ ODIR   = ./obj
 
 all: $(EXEC) 
 
-$(EXEC): $(OBJ) 
-	$(CC) $(OFLAGS) $(EXEC) $(OBJ) $(LIBS) 
+$(EXEC): $(OBJ)
+	mkdir -p bin
+	$(CC) $(OFLAGS) bin/$(EXEC) $(OBJ) $(LIBS) 
 	mv $(OBJ) $(ODIR) 
 
 Radiator.o: $(SDIR)/Radiator.C $(IDIR)/Radiator.h
@@ -45,4 +46,4 @@ MyTest.o: $(CPROG)
 .PHONY: clean
 
 clean: 
-	rm $(ODIR)/*.o $(EXEC)  
+	rm $(ODIR)/*.o bin/$(EXEC)  
