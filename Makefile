@@ -10,41 +10,57 @@ OFLAGS = -o
 # executable  
 EXEC   = Test
 # programs
-FPROG  = f1f209.f
 CPROG  = MyTest.C 
 # objects 
-OBJ    = f1f209.o F1F209.o Radiator.o eInclusiveCrossSection.o MyTest.o 
+#OBJ    = f1f209.o F1F209.o Radiator.o eInclusiveCrossSection.o 
+
+# object files to build which have corresponding header and c file
+CPPOBJECTS := obj/Radiator.o \
+              obj/eInclusiveCrossSection.o \
+              obj/F1F209.o
+# object files to build from fortran files
+F77OBJECTS := obj/f1f209.o
+
+OBJ := $(CPPOBJECTS) $(F77OBJECTS)
+
 # libraries 
-LIBS   = -f2c -lgfortran
+LIBS   = -lgfortran
 # directories 
-SDIR   = ./src
-IDIR   = ./include
-ODIR   = ./obj
+SDIR   = src
+IDIR   = include
+ODIR   = obj
 
 all: $(EXEC) 
 
-$(EXEC): $(OBJ)
+$(EXEC): $(CPPOBJECTS) $(F77OBJECTS) 
 	mkdir -p bin
 	mkdir -p obj
-	$(CC) $(OFLAGS) bin/$(EXEC) $(OBJ) $(LIBS) 
-	mv $(OBJ) $(ODIR) 
+	$(CC) -o bin/$(EXEC) $(CPROG) $(OBJ) $(LIBS) 
 
-Radiator.o: $(SDIR)/Radiator.C $(IDIR)/Radiator.h
-	$(CC) $(CFLAGS) $(SDIR)/Radiator.C
+$(CPPOBJECTS) : $(ODIR)/%.o : $(IDIR)/%.h
+	$(CC) -o $@ $(CFLAGS) $(@:$(ODIR)/%.o=$(SDIR)/%.C)
 
-eInclusiveCrossSection.o: $(SDIR)/eInclusiveCrossSection.C $(IDIR)/eInclusiveCrossSection.h
-	$(CC) $(CFLAGS) $(SDIR)/eInclusiveCrossSection.C
+$(F77OBJECTS) : $(ODIR)/%.o :
+	$(FF) -o $@ $(CFLAGS) $(FFLAGS) $(@:$(ODIR)/%.o=$(SDIR)/%.f)
 
-F1F209.o: $(SDIR)/F1F209.C $(IDIR)/F1F209.h
-	$(CC) $(CFLAGS) $(SDIR)/F1F209.C
-
-f1f209.o: $(SDIR)/$(FPROG)
-	$(FF) $(CFLAGS) $(FFLAGS) $(SDIR)/$(FPROG) 
-
-MyTest.o: $(CPROG)
-	$(CC) $(CFLAGS) $(CPROG)
+#Radiator.o: $(SDIR)/Radiator.C $(IDIR)/Radiator.h
+#	$(CC) $(CFLAGS) $(SDIR)/Radiator.C
+#
+#eInclusiveCrossSection.o: $(SDIR)/eInclusiveCrossSection.C $(IDIR)/eInclusiveCrossSection.h
+#	$(CC) $(CFLAGS) $(SDIR)/eInclusiveCrossSection.C
+#
+#F1F209.o: $(SDIR)/F1F209.C $(IDIR)/F1F209.h
+#	$(CC) $(CFLAGS) $(SDIR)/F1F209.C
+#
+#f1f209.o: $(SDIR)/$(FPROG)
+#	$(FF) $(CFLAGS) $(FFLAGS) $(SDIR)/$(FPROG) 
+#
+#MyTest.o: $(CPROG)
+#	$(CC) $(CFLAGS) $(CPROG)
 
 .PHONY: clean
 
 clean: 
-	rm $(ODIR)/*.o bin/$(EXEC)  
+	rm $(ODIR)/*.o bin/$(EXEC) 
+
+
