@@ -25,6 +25,7 @@ all: $(EXEC)
 
 $(EXEC): $(OBJ)
 	mkdir -p bin
+	mkdir -p obj
 	$(CC) $(OFLAGS) bin/$(EXEC) $(OBJ) $(LIBS) 
 	mv $(OBJ) $(ODIR) 
 
