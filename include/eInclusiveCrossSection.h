@@ -1,9 +1,9 @@
-// Cross section class
-// Notes: - Variables: beam energy (Es) and scattered energy (Ep) are in GeV, 
+// eInclusiveCrossSection class
+// Notes: - Abstract base class 
+//        - Variables: beam energy (Es) and scattered energy (Ep) are in GeV, 
 //          scattering angle (th) is in degrees.  A is in g/mol. 
-//        - Input to the GetXS method: Z, A, Es, Ep, th 
-//        - The resulting inelastic cross section, calculated from the fortran subroutine 
-//          F1F209, is in units of pb/MeV/sr. 
+//        - Needed values: Z, A, Es, Ep, th 
+//        - The resulting cross section is for inclusive inelastic electron scattering  
 
 #ifndef eINCLUSIVECROSSSECTION_H
 #define eINCLUSIVECROSSSECTION_H
