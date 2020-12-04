@@ -15,11 +15,10 @@
 class ElasticFormFactor {
 
    protected:
-      void Init();
 
    public:
-      ElasticFormFactor();
-      ~ElasticFormFactor();
+      ElasticFormFactor()  {};
+      ~ElasticFormFactor() {};
 
       virtual double GetGE(double Q2)=0;
       virtual double GetGM(double Q2)=0;
