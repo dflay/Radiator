@@ -1,5 +1,5 @@
-#ifndef RADCOR_H
-#define RADCOR_H 
+#ifndef RADCOR_HH
+#define RADCOR_HH 
 
 #include <cstdlib>
 #include <iostream>
